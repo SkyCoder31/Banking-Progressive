@@ -3,13 +3,17 @@ package com.wecp.progressive.service;
 import com.wecp.progressive.dao.CustomerDAO;
 import com.wecp.progressive.entity.Customers;
 
+import java.util.*;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class CustomerServiceImpl implements CustomerService {
 
-    private static List<Customers> customersList = new ArrayList<>();
+    private static List<Customers> cusList = new ArrayList<>();
 
     private CustomerDAO customerDAO;
 
@@ -48,21 +52,24 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customers> getAllCustomersFromArrayList() {
-        return null;
+        return cusList;
     }
 
     @Override
     public List<Customers> addCustomersToArrayList(Customers customers) {
-        return null;
+        cusList.add(customers);
+        return cusList;
     }
 
     @Override
     public List<Customers> getAllCustomersSortedByNameFromArrayList(){
-        return null;
+       List<Customers> sortCus=cusList;
+       Collections.sort(sortCus);
+       return sortCus;
     }
 
     @Override
     public void emptyArrayList() {
-        
+        cusList=new ArrayList<>();
     }
 }
