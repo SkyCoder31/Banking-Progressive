@@ -18,10 +18,10 @@ public class Transactions {
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
     }
-    public int getTrasactionId() {
+    public int getTransactionId() {
         return trasactionId;
     }
-    public void setTrasactionId(int trasactionId) {
+    public void setTransactionId(int trasactionId) {
         this.trasactionId = trasactionId;
     }
     public int getAccountId() {
