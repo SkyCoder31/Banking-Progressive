@@ -2,7 +2,6 @@ package com.wecp.progressive.service;
 
 
 import com.wecp.progressive.dao.CustomerDAO;
-import com.wecp.progressive.dao.CustomerDAOImpl;
 import com.wecp.progressive.entity.Customers;
 
 import java.sql.SQLException;
@@ -10,9 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CustomerServiceImpl implements CustomerService {
+import org.springframework.beans.factory.annotation.Autowired;
 
-    CustomerDAO customerDAO;
+public class CustomerServiceImpl implements CustomerService {
+    @Autowired
+    private CustomerDAO customerDAO;
     private static List<Customers> customersList = new ArrayList<>();
 
     public CustomerServiceImpl(CustomerDAO customerDAO) {
@@ -21,7 +22,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customers> getAllCustomers() throws SQLException {
-        return customerDAO.getAllCustomers();
+       return customerDAO.getAllCustomers();
+    //    return null;
     }
 
     @Override
