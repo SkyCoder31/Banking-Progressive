@@ -1,28 +1,35 @@
 package com.wecp.progressive.entity;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Transactions {
 
-    private int trasactionId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int transactionId;
     private int accountId;
     private double amount;
     private Date transactionDate;
     private String transactionType;
     public Transactions() {
     }
-    public Transactions(int trasactionId, int accountId, double amount, Date transactionDate, String transactionType) {
-        this.trasactionId = trasactionId;
+    public Transactions(int transactionId, int accountId, double amount, Date transactionDate, String transactionType) {
+        this.transactionId = transactionId;
         this.accountId = accountId;
         this.amount = amount;
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
     }
     public int getTransactionId() {
-        return trasactionId;
+        return transactionId;
     }
-    public void setTransactionId(int trasactionId) {
-        this.trasactionId = trasactionId;
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
     }
     public int getAccountId() {
         return accountId;
@@ -50,7 +57,7 @@ public class Transactions {
     }
     @Override
     public String toString() {
-        return "Transactions [trasactionId=" + trasactionId + ", accountId=" + accountId + ", amount=" + amount
+        return "Transactions [transactionId=" + transactionId + ", accountId=" + accountId + ", amount=" + amount
                 + ", transactionDate=" + transactionDate + ", transactionType=" + transactionType + "]";
     }
 

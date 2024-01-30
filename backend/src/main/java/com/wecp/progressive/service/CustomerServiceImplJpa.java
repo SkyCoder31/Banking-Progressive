@@ -15,24 +15,23 @@ import com.wecp.progressive.repository.CustomerRepository;
 @Service
 public class CustomerServiceImplJpa implements CustomerService{
    
-     @Autowired
+    @Autowired
     private CustomerRepository customerRepository;
    
     private static List<Customers> customersList = new ArrayList<>();
+    public CustomerServiceImplJpa(CustomerRepository customerRepository){
+        this.customerRepository=customerRepository;
+    }
  
  
     @Override
     public List<Customers> getAllCustomers() throws SQLException {
         return customerRepository.findAll();
-        //return null;
     }
  
     @Override
     public Customers getCustomerById(int customerId) throws SQLException {
-       
-       // return customerDAO.getCustomerById(customerId);
-    //    return customerRepository.findById(customerId);
-        return null;
+        return customerRepository.findById(customerId).get();
     }
  
     @Override
@@ -40,18 +39,23 @@ public class CustomerServiceImplJpa implements CustomerService{
        
        customerRepository.save(customers);
        return customers.getCustomerId();
-        // return -1;
     }
  
     @Override
     public void updateCustomer(Customers customers) throws SQLException {
-       
+        customerRepository.findById(customers.getCustomerId()).map(customer ->{
+            customer.setName(customers.getName());
+            customer.setEmail(customers.getEmail());
+            customer.setUsername(customers.getUsername());
+            customer.setPassword(customers.getPassword());
+            return customerRepository.save(customer);
+        });
        
     }
  
     @Override
     public void deleteCustomer(int customerId) throws SQLException {
-       
+       customerRepository.deleteById(customerId);
     }
  
     @Override
