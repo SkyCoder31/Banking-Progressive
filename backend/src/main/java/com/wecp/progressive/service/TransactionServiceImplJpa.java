@@ -1,7 +1,6 @@
 package com.wecp.progressive.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,9 @@ import org.springframework.stereotype.Service;
 import com.wecp.progressive.entity.Transactions;
 import com.wecp.progressive.repository.AccountRepository;
 import com.wecp.progressive.repository.TransactionRepository;
+
 @Service
-public class TransactionServiceImplJpa implements TransactionService{
+public class TransactionServiceImplJpa implements TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -19,16 +19,13 @@ public class TransactionServiceImplJpa implements TransactionService{
     @Autowired
     private AccountRepository accountRepository;
 
-    
-    private static List<Transactions> transactionsList=new ArrayList<>();
+    public TransactionServiceImplJpa() {
 
-    
+    }
 
-
-    public TransactionServiceImplJpa(TransactionRepository transactionRepository, AccountRepository accountRepository){
-        this.transactionRepository=transactionRepository;
+    public TransactionServiceImplJpa(TransactionRepository transactionRepository, AccountRepository accountRepository) {
+        this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
-
     }
 
     @Override
@@ -38,34 +35,30 @@ public class TransactionServiceImplJpa implements TransactionService{
 
     @Override
     public Transactions getTransactionById(int transactionId) throws SQLException {
-       return transactionRepository.findById(transactionId).get();
+        return transactionRepository.findById(transactionId).get();
     }
 
     @Override
     public int addTransaction(Transactions transaction) throws SQLException {
         return transactionRepository.save(transaction).getTransactionId();
-       
     }
 
     @Override
     public void updateTransaction(Transactions transaction) throws SQLException {
-        transactionRepository.findById(transaction.getTransactionId()).map(transactions->{
-            transactions.setAccountId(transaction.getAccountId());
-            transactions.setAmount(transaction.getAmount());
-            transactions.setTransactionDate(transaction.getTransactionDate());
-            transactions.setTransactionType(transaction.getTransactionType());
-            return transactionRepository.save(transactions);
-        });
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateTransaction'");
     }
 
     @Override
     public void deleteTransaction(int transactionId) throws SQLException {
-        transactionRepository.deleteById(transactionId);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteTransaction'");
     }
 
     @Override
     public List<Transactions> getTransactionsByCustomerId(int customerId) throws SQLException {
-        return transactionRepository.findByCustomerId(customerId);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTransactionsByCustomerId'");
     }
 
 }

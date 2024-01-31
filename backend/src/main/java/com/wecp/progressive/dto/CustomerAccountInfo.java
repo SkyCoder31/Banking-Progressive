@@ -15,7 +15,6 @@ public class CustomerAccountInfo {
         this.balance = balance;
     }
 
-
     public int getCustomerId() {
         return customerId;
     }
@@ -58,6 +57,12 @@ public class CustomerAccountInfo {
 
     @Override
     public String toString() {
-        return "CustomerAccountInfo{" +"customerId=" + customerId +", customerName='" + customerName + '\'' +", email='" + email + '\'' +", accountId=" + accountId +", balance=" + balance +'}';
+        return "CustomerAccountInfo{" +
+                "customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                ", email='" + email + '\'' +
+                ", accountId=" + accountId +
+                ", balance=" + balance +
+                '}';
     }
 }
