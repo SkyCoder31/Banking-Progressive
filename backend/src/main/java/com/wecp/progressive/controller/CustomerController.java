@@ -27,8 +27,8 @@ public class CustomerController {
     }
  
     @GetMapping("/{customerId}")
-    public ResponseEntity<Customers> getCustomerById(@PathVariable int customerID) throws SQLException {
-        return new ResponseEntity<Customers>(customerService.getCustomerById(customerID),HttpStatus.OK);
+    public ResponseEntity<Customers> getCustomerById(@PathVariable Integer customerId) throws SQLException {
+        return new ResponseEntity<Customers>(customerService.getCustomerById(customerId),HttpStatus.OK);
     }
  
     @PostMapping()
@@ -37,19 +37,19 @@ public class CustomerController {
     }
  
     @PutMapping("/{customerId}")
-    public ResponseEntity<Void> updateCustomer(@PathVariable int customerId, @RequestBody Customers customers) throws SQLException {
+    public ResponseEntity<Void> updateCustomer(@PathVariable Integer customerId, @RequestBody Customers customers) throws SQLException {
         customers.setCustomerId(customerId);
         customerService.updateCustomer(customers);
         return new ResponseEntity<>(HttpStatus.OK);
     }
  
     @DeleteMapping("/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable int customerId) throws SQLException {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) throws SQLException {
         customerService.deleteCustomer(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
  
-    public ResponseEntity<List<Transactions>> getAllTransactionsByCustomerId(int cutomerId) {
+    public ResponseEntity<List<Transactions>> getAllTransactionsByCustomerId(Integer cutomerId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
  
@@ -63,7 +63,7 @@ public class CustomerController {
     }
  
     @GetMapping("/fromArrayList/{customerId}")
-    public ResponseEntity<List<Customers>> getAllCustomersSortedByNameFromArrayList(@PathVariable int customerID) {
+    public ResponseEntity<List<Customers>> getAllCustomersSortedByNameFromArrayList(@PathVariable int customerId) {
         return new ResponseEntity<List<Customers>>(customerService.getAllCustomersSortedByNameFromArrayList(),HttpStatus.OK);
  
     }

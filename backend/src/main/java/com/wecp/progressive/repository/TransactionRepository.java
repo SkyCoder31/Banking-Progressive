@@ -9,5 +9,5 @@ import com.wecp.progressive.entity.Transactions;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transactions,Integer> {
 
-    //List<Transactions> findByCustomerId(int customerId);
+    public List<Transactions> findByCustomerId(int customerId);
 }

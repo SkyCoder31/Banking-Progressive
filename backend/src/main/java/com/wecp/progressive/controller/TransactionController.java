@@ -17,22 +17,28 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
-
+    @GetMapping
     public ResponseEntity<List<Transactions>> getAllTransactions()throws SQLException {
         return new ResponseEntity<>(transactionService.getAllTransactions(),HttpStatus.OK);
     }
-    public ResponseEntity<Transactions> getTransactionById(int transactionId)throws SQLException {
+
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<Transactions> getTransactionById(@PathVariable int transactionId)throws SQLException {
         return new ResponseEntity<>(transactionService.getTransactionById(transactionId),HttpStatus.OK);
     }
-    public ResponseEntity<Integer> addTransaction(Transactions transaction)throws SQLException{
+    @PostMapping
+    public ResponseEntity<Integer> addTransaction(@RequestBody Transactions transaction)throws SQLException{
         return new ResponseEntity<>(transactionService.addTransaction(transaction),HttpStatus.CREATED);
     }
-    public ResponseEntity<Void> updateTransaction(int transactionId, Transactions transaction) throws SQLException {
+    @PutMapping("/{transactionId}")
+    public ResponseEntity<Void> updateTransaction(@PathVariable int transactionId, @RequestBody Transactions transaction) throws SQLException {
         transaction.getTransactionId();
         transactionService.updateTransaction(transaction);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    public ResponseEntity<Void> deleteTransaction(int transactionId)throws SQLException{
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteTransaction(@PathVariable int transactionId)throws SQLException{
         transactionService.deleteTransaction(transactionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

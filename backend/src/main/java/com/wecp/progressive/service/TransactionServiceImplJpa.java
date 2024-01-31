@@ -15,13 +15,20 @@ public class TransactionServiceImplJpa implements TransactionService{
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
     private AccountRepository accountRepository;
+
     
     private static List<Transactions> transactionsList=new ArrayList<>();
 
-    public TransactionServiceImplJpa(TransactionRepository transactionRepository,AccountRepository accountRepository){
+    
+
+
+    public TransactionServiceImplJpa(TransactionRepository transactionRepository, AccountRepository accountRepository){
         this.transactionRepository=transactionRepository;
-        this.accountRepository=accountRepository;
+        this.accountRepository = accountRepository;
+
     }
 
     @Override
@@ -36,8 +43,8 @@ public class TransactionServiceImplJpa implements TransactionService{
 
     @Override
     public int addTransaction(Transactions transaction) throws SQLException {
-        transactionRepository.save(transaction);
-        return transaction.getTransactionId();
+        return transactionRepository.save(transaction).getTransactionId();
+       
     }
 
     @Override
@@ -58,7 +65,7 @@ public class TransactionServiceImplJpa implements TransactionService{
 
     @Override
     public List<Transactions> getTransactionsByCustomerId(int customerId) throws SQLException {
-        return null; //transactionRepository.findByCustomerId(customerId);
+        return transactionRepository.findByCustomerId(customerId);
     }
 
 }

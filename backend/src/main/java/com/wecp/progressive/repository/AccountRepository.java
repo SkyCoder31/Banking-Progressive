@@ -11,5 +11,6 @@ import com.wecp.progressive.entity.Accounts;
 public interface AccountRepository extends JpaRepository<Accounts,Integer>{
 
 
-    public List<Accounts> findByCustomerId(int userId)throws SQLException;
+    public List<Accounts> findByCustomerId(int customerId)throws SQLException;
+    public List<Accounts> findByOrderByBalance()throws SQLException;
 }

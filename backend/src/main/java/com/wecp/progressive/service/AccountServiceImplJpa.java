@@ -18,6 +18,7 @@ public class AccountServiceImplJpa implements AccountService {
     private AccountRepository accountRepository;
 
     private static List<Accounts> accountsList=new ArrayList<>();
+    
     public AccountServiceImplJpa(AccountRepository accountRepository){
         this.accountRepository=accountRepository;
     }
@@ -59,7 +60,7 @@ public class AccountServiceImplJpa implements AccountService {
 
     @Override
     public List<Accounts> getAllAccountsSortedByBalance() throws SQLException {
-        return null;
+       return accountRepository.findByOrderByBalance();
     }
 
     @Override
