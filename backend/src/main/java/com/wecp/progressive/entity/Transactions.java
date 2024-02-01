@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Transactions {
@@ -13,6 +15,10 @@ public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
+
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    private Accounts accounts;
 
     private int accountId;
     private double amount;
@@ -22,9 +28,9 @@ public class Transactions {
     public Transactions() {
     }
 
-    public Transactions(int trasactionId, int accountId, double amount, Date transactionDate, String transactionType) {
-        this.transactionId = trasactionId;
-        this.accountId = accountId;
+    public Transactions(int transactionId, int accountId, double amount, Date transactionDate, String transactionType) {
+        this.transactionId = transactionId;
+        this.accounts.setAccountId(accountId);
         this.amount = amount;
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
@@ -38,12 +44,13 @@ public class Transactions {
         this.transactionId = transactionId;
     }
 
-    public int getAccountId() {
-        return accountId;
+   
+    public Accounts getAccounts() {
+        return accounts;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
     }
 
     public double getAmount() {

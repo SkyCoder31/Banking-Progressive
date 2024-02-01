@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Accounts implements Comparable<Accounts>{
@@ -12,7 +14,10 @@ public class Accounts implements Comparable<Accounts>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
     
-    private int customerId;
+
+    @ManyToOne
+    @JoinColumn(name = "customerId")
+    private Customers customers;
     private double balance;
 
     public Accounts() {
@@ -20,7 +25,7 @@ public class Accounts implements Comparable<Accounts>{
 
     public Accounts(int accountId, int customerId, double balance) {
         this.accountId = accountId;
-        this.customerId = customerId;
+        this.customers.setCustomerId(customerId);
         this.balance = balance;
     }
 
@@ -32,12 +37,12 @@ public class Accounts implements Comparable<Accounts>{
         this.accountId = accountId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customers getCustomers() {
+        return customers;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(Customers customers) {
+        this.customers= customers;
     }
 
     public double getBalance() {
