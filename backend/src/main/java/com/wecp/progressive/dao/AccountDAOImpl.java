@@ -1,5 +1,8 @@
 package com.wecp.progressive.dao;
 
+import com.wecp.progressive.config.DatabaseConnectionManager;
+import com.wecp.progressive.entity.Accounts;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,111 +10,182 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wecp.progressive.config.DatabaseConnectionManager;
-import com.wecp.progressive.entity.Accounts;
-
 public class AccountDAOImpl implements AccountDAO {
+    private List<Accounts> accountsList = new ArrayList<Accounts>();
 
     @Override
-    public int addAccount(Accounts accounts) throws SQLException {
-        
-        int generatedKey = -1;
+    public List<Accounts> getAllAccounts() throws SQLException {
+        List<Accounts> accounts = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
-        Connection connection = DatabaseConnectionManager.getConnection();
-        String sql = "INSERT INTO accounts (customer_id, balance) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, accounts.getCustomerId());
-            statement.setDouble(2, accounts.getBalance());
-            
-            statement.executeUpdate();
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "SELECT * FROM accounts";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
 
-            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()) {
+                int accountId = resultSet.getInt("account_id");
+                int customerId = resultSet.getInt("customer_id");
+                double balance = resultSet.getDouble("balance");
 
-            if(resultSet.next()){
-                generatedKey = resultSet.getInt(1);
-                accounts.setAccountId(generatedKey);
+                accounts.add(new Accounts(accountId, customerId, balance));
             }
-        } finally{
-            if(connection != null) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
 
-        return generatedKey;
+        return accounts;
+
+    }
+
+    public List<Accounts> getAllAccountsByCustomer(int customer_id) throws SQLException {
+        List<Accounts> accounts = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "SELECT * FROM accounts where customer_id = '"+customer_id+"'";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int accountId = resultSet.getInt("account_id");
+                int customerId = resultSet.getInt("customer_id");
+                double balance = resultSet.getDouble("balance");
+
+                accounts.add(new Accounts(accountId, customerId, balance));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
+        return accounts;
     }
 
     @Override
     public Accounts getAccountById(int accountId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
-        Accounts account = null;
-
-        Connection connection = DatabaseConnectionManager.getConnection();
-        String sql = "SELECT * FROM accounts WHERE account_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "SELECT * FROM accounts WHERE account_id = ?";
+            statement = connection.prepareStatement(sql);
             statement.setInt(1, accountId);
-            
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 int customerId = resultSet.getInt("customer_id");
                 double balance = resultSet.getDouble("balance");
-                account = new Accounts(accountId, customerId, balance);
+                return new Accounts(accountId, customerId, balance);
             }
-        } finally{
-            if(connection != null) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            // Close resources in the reverse order of opening
+            if (connection != null) {
+                connection.close();
+            }
         }
-
-        return account;
+        return null;
     }
 
     @Override
-    public void updateAccount(Accounts accounts) throws SQLException {
-        Connection connection = DatabaseConnectionManager.getConnection();
-        String sql = "UPDATE accounts SET customer_id = ?, balance = ? WHERE account_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, accounts.getCustomerId());            
-            statement.setDouble(2, accounts.getBalance());            
-            statement.setInt(3, accounts.getAccountId());
+    public int addAccount(Accounts accounts) throws SQLException {
+        int generatedID = -1;
+        Connection connection = null;
+        PreparedStatement statement = null;
 
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "INSERT INTO accounts (customer_id, balance) VALUES (?, ?)";
+            statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //Comment previous set field before entity associations
+            // statement.setInt(1, accounts.getCustomerId());
+            statement.setDouble(2, accounts.getBalance());
             statement.executeUpdate();
 
-        } finally{
-            if(connection != null) connection.close();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                generatedID = resultSet.getInt(1);
+                accounts.setAccountId(generatedID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return generatedID;
+
+    }
+
+
+    @Override
+    public void updateAccount(Accounts accounts) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "UPDATE accounts SET customer_id = ?, balance = ? WHERE account_id = ?";
+            statement = connection.prepareStatement(sql);
+
+            //Comment previous set field before entity associations
+            // statement.setInt(1, accounts.getCustomerId());
+            statement.setDouble(2, accounts.getBalance());
+            statement.setInt(3, accounts.getAccountId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 
     @Override
     public void deleteAccount(int accountId) throws SQLException {
-        Connection connection = DatabaseConnectionManager.getConnection();
-        String sql = "DELETE FROM accounts WHERE account_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+            String sql = "DELETE FROM accounts WHERE account_id = ?";
+            statement = connection.prepareStatement(sql);
             statement.setInt(1, accountId);
             statement.executeUpdate();
-        } finally{
-            if(connection != null) connection.close();
-        }
-    }
-
-    @Override
-    public List<Accounts> getAllAccounts() throws SQLException {
-        List<Accounts> accountsList = new ArrayList<Accounts>();
-
-        Connection connection = DatabaseConnectionManager.getConnection();
-        String sql = "SELECT * FROM accounts";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            ResultSet resultSet = statement.executeQuery();
-
-            while(resultSet.next()){
-                int accountId = resultSet.getInt("account_id");
-                int customerId = resultSet.getInt("customer_id");
-                double balance = resultSet.getDouble("balance");
-
-                Accounts accounts = new Accounts(accountId, customerId, balance);
-                accountsList.add(accounts);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow the exception
+        } finally {
+            if (connection != null) {
+                connection.close();
             }
-        } finally{
-            if(connection != null) connection.close();
         }
-
-        return accountsList;
     }
+
 
 }

@@ -1,19 +1,21 @@
 package com.wecp.progressive.service;
 
+
+import com.wecp.progressive.dao.CustomerDAO;
+import com.wecp.progressive.dao.CustomerDAOImpl;
+import com.wecp.progressive.entity.Customers;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.wecp.progressive.dao.CustomerDAO;
-import com.wecp.progressive.entity.Customers;
-
 public class CustomerServiceImpl implements CustomerService {
 
-    private static List<Customers> customerList = new ArrayList<Customers>();
-    private CustomerDAO customerDAO;
+    CustomerDAO customerDAO;
+    private static List<Customers> customersList = new ArrayList<>();
 
-    public CustomerServiceImpl(CustomerDAO customerDAO){
+    public CustomerServiceImpl(CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
     }
 
@@ -44,31 +46,33 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customers> getAllCustomersSortedByName() throws SQLException {
-        List<Customers> customersList = getAllCustomers();
-        Collections.sort(customersList);
-        return customersList;
+        List<Customers> sortedCustomers = customerDAO.getAllCustomers();
+        if (sortedCustomers != null) {
+            Collections.sort(sortedCustomers);
+        }
+        return sortedCustomers;
     }
 
     @Override
     public List<Customers> getAllCustomersFromArrayList() {
-        return customerList;
+        return customersList;
     }
 
     @Override
     public List<Customers> addCustomersToArrayList(Customers customers) {
-        customerList.add(customers);
-        return customerList;
+        customersList.add(customers);
+        return customersList;
     }
 
     @Override
-    public List<Customers> getAllCustomersSortedByNameFromArrayList() {
-        Collections.sort(customerList);
-        return customerList;
+    public List<Customers> getAllCustomersSortedByNameFromArrayList(){
+        List<Customers> sortedCustomers = customersList;
+        Collections.sort(sortedCustomers);
+        return sortedCustomers;
     }
 
     @Override
     public void emptyArrayList() {
-        customerList.clear();
+        customersList = new ArrayList<>();
     }
-
 }
