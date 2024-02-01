@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wecp.progressive.entity.Accounts;
+import com.wecp.progressive.exception.AccountNotFoundException;
 import com.wecp.progressive.repository.AccountRepository;
 
 @Service
@@ -34,7 +35,7 @@ public class AccountServiceImplJpa implements AccountService {
     }
 
     @Override
-    public Accounts getAccountById(int accountId) throws SQLException {
+    public Accounts getAccountById(int accountId) throws AccountNotFoundException {
         return accountRepository.findById(accountId).get();
     }
 
