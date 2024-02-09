@@ -14,9 +14,7 @@ public class Transactions {
     private String transactionType;
     private Date transactionDate;
 
-    public Transactions() {
-        //
-    }
+    public Transactions() {}
 
     public Transactions(int transactionId, int accountId, double amount, Date timestamp, String transactionType) {
         this.transactionId = transactionId;
@@ -26,7 +24,6 @@ public class Transactions {
         this.transactionType = transactionType;
     }
 
-    // Getters and setters
     public int getTransactionId() {
         return transactionId;
     }
